@@ -1,0 +1,10 @@
+---
+title: "p8105_hw2_kb2977"
+author: "Francois Ban"
+date: "9/28/2018"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
