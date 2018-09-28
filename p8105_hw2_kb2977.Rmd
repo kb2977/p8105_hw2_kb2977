@@ -7,4 +7,17 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
 ```
+
+##Problem 1
+
+Importing NYC Transit data using relative paths subdirectory 
+
+```{r}
+transit_data = ("./data/nyc_transit_data") %>% 
+  janitor::clean_names()
+```
+
+create a subdirectory to store the local data files used in Problems 1 and 2, and use relative paths to access these data files
