@@ -31,17 +31,19 @@ transit_data =
 
 Explanation of dataset:
 
-Write a short paragraph about this dataset – explain briefly what variables the dataset contains, describe your data cleaning steps so far, and give the dimension (rows x columns) of the resulting dataset. Are these data tidy?
+The variables line, station name, station latitude/longitude, route number, entrance type, entry, vending, and ada were include in the dataset "transit_data". First, I read in the csv file of the NYC transit data then cleaned the names by using janitor::clean_names and changed the variable names to lowerclass and put in "_" for spaces. I also recoded the variable "entry" to a logical variable (i.e. TRUE and FALSE). The resulting data has `r nrow(transit_data)` rows and `r ncol(transit_data)` columns. This data isn't tidy because we see that route number is spread across 11 columns.
+
+Below I kept only the distinct stations by station name and line:
 
 ```{r distinct_data}
 transit_data_distinct = distinct(transit_data, station_name, line, .keep_all = TRUE)
 ```
 
-Short numeric summary of dataset:
+Short numeric summary of dataset based on distinct stations:
 
-There are `r nrow(distinct(transit_data_distinct, station_name, line))` distinct stations.
-There are `r length(which(transit_data_distinct$ada))` stations that are ADA compliant.
-There are `r round(mean(transit_data_distinct$entry & transit_data_distinct$vending == "NO"), digits = 4)` proportion of station entrances/exits without vending that allow entrance.
+* There are `r nrow(distinct(transit_data_distinct, station_name, line))` distinct stations.
+* There are `r length(which(transit_data_distinct$ada))` stations that are ADA compliant.
+* `r round(mean(transit_data_distinct$entry & transit_data_distinct$vending == "NO"), digits = 4)` of station entrances and exits without vending are allowed entrance.
 
 Below is the reformated data so that route number and route name are distinct variables.
 
@@ -50,6 +52,7 @@ transit_data_tidy = transit_data_distinct %>%
   gather(key = route_number, value = route_name, route1:route11)
 ```
 
-There are `r nrow(filter(transit_data_tidy, route_name == "A"))` distinct stations that serve the A train.
-Of the `r nrow(filter(transit_data_tidy, route_name == "A"))` distinct stations that serve the A train, `r nrow(filter(transit_data_tidy, route_name == "A", ada == "TRUE"))` are ADA compliant.
+* There are `r nrow(filter(transit_data_tidy, route_name == "A"))` distinct stations that serve the A train.
+* Of the `r nrow(filter(transit_data_tidy, route_name == "A"))` distinct stations that serve the A train, `r nrow(filter(transit_data_tidy, route_name == "A", ada == "TRUE"))` are ADA compliant.
 
+##Problem 2
