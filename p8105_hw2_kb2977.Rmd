@@ -69,7 +69,7 @@ Below I makes these changes to the Mr. Trash Wheel Data:
 2. Specify the sheet in the Excel file and to omit columns containing notes (using the range argument and cell_cols() function)
 3. Use reasonable variable names
 4. Omit rows that do not include dumpster-specific data
-5. Round the number of sports balls to the nearest integer and convert the result to an integer variable (using  as.integer)
+5. Round the number of sports balls to the nearest integer and convert the result to an integer variable (using as.integer)
 
 ```{r trash_wheel}
 
@@ -94,20 +94,32 @@ Data manipulation for Mr. Trash Wheel precipitation data 2016:
 ```{r prec_2016}
 
 prec_2016 = 
-  read_excel("data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation") %>%
-  janitor::clean_names()
+  read_excel("data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation", skip = 1) %>%
+  janitor::clean_names() %>%
+  filter(!is.na(total)) %>%
+  filter(!is.na(month)) %>%
+  add_column(year = 2016)
 ```
 
 Data manipulation for Mr. Trash Wheel precipitation data 2017:
 
 ```{r prec_2017}
 prec_2017 = 
-  read_excel("data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation") %>%
-  janitor::clean_names()
+  read_excel("data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation", skip = 1) %>%
+  janitor::clean_names() %>%
+  filter(!is.na(total)) %>%
+  filter(!is.na(month)) %>%
+  add_column(year = 2017)
 ```
 
+Combining precipitation data 2016 and 2017:
 
+```{r combined}
+combined_prec_data = rbind(prec_2016, prec_2017) %>%
+  mutate(month = month.name[month])
+```
 
+###Part 3: Explaining both Mr. Trash Wheel Data (from Part 1) and Combined Precipitation Data (from Part 2)
 Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2017? What was the median number of sports balls in a dumpster in 2016?
 
 
