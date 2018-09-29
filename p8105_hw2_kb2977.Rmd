@@ -13,6 +13,8 @@ library(tidyverse)
 
 ##Problem 1
 
+###Part 1: NYC Transit Data
+
 Using pipline to:
 
 * Import NYC Transit data using relative paths into a subdirectory
@@ -32,6 +34,8 @@ transit_data =
 Explanation of dataset:
 
 The variables line, station name, station latitude/longitude, route number, entrance type, entry, vending, and ada were include in the dataset "transit_data". First, I read in the csv file of the NYC transit data then cleaned the names by using janitor::clean_names and changed the variable names to lowerclass and put in "_" for spaces. I also recoded the variable "entry" to a logical variable (i.e. TRUE and FALSE). The resulting data has `r nrow(transit_data)` rows and `r ncol(transit_data)` columns. This data isn't tidy because we see that route number is spread across 11 columns.
+
+###Part 2: Distinct NYC Transit Stations
 
 Below I kept only the distinct stations by station name and line:
 
@@ -56,3 +60,54 @@ transit_data_tidy = transit_data_distinct %>%
 * Of the `r nrow(filter(transit_data_tidy, route_name == "A"))` distinct stations that serve the A train, `r nrow(filter(transit_data_tidy, route_name == "A", ada == "TRUE"))` are ADA compliant.
 
 ##Problem 2
+
+###Part 1: Mr. Trash Wheel Data
+
+Below I makes these changes to the Mr. Trash Wheel Data:
+
+1. Read and clean the Mr. Trash Wheel sheet
+2. Specify the sheet in the Excel file and to omit columns containing notes (using the range argument and cell_cols() function)
+3. Use reasonable variable names
+4. Omit rows that do not include dumpster-specific data
+5. Round the number of sports balls to the nearest integer and convert the result to an integer variable (using  as.integer)
+
+```{r trash_wheel}
+
+library(readxl)
+trash_wheel_data = 
+  read_excel("data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "Mr. Trash Wheel", 
+             range = "A2:N258") %>% 
+  janitor::clean_names() %>%
+  filter(!is.na(dumpster)) %>%
+  mutate(sports_balls = round(sports_balls), 
+         sports_balls = as.integer(sports_balls))
+```
+
+###Part 2: Percipitation Data 2016 and 2017
+
+* Read and clean precipitation data for 2016 and 2017.
+    + For each, omit rows without precipitation data and add a variable year. 
+    + Combine datasets and convert month to a character variable (the variable month.name is built into R and should be useful).
+    
+Data manipulation for Mr. Trash Wheel precipitation data 2016:
+    
+```{r prec_2016}
+
+prec_2016 = 
+  read_excel("data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2016 Precipitation") %>%
+  janitor::clean_names()
+```
+
+Data manipulation for Mr. Trash Wheel precipitation data 2017:
+
+```{r prec_2017}
+prec_2017 = 
+  read_excel("data/HealthyHarborWaterWheelTotals2017-9-26.xlsx", sheet = "2017 Precipitation") %>%
+  janitor::clean_names()
+```
+
+
+
+Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2017? What was the median number of sports balls in a dumpster in 2016?
+
+
