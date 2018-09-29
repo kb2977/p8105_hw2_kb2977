@@ -13,11 +13,33 @@ library(tidyverse)
 
 ##Problem 1
 
-Importing NYC Transit data using relative paths subdirectory 
+Using pipline to:
 
-```{r}
-transit_data = ("./data/nyc_transit_data") %>% 
-  janitor::clean_names()
+* Import NYC Transit data using relative paths into a subdirectory
+* Read and clean the data 
+* Retain line, station, name, station latitude / longitude, routes served, entry, vending, entrance type, and ADA compliance. 
+* Convert the entry variable from character (YES vs NO) to a logical variable (the ifelse or recode function may be useful).
+
+```{r pipline}
+transit_data = 
+  read_csv(file = "./data/nyc_transit_data.csv") %>% 
+  janitor::clean_names() %>% 
+  select(line, starts_with("station"), starts_with("route"), entrance_type, entry, vending, ada, 
+         -station_location) %>%
+  mutate(entry = recode(entry, "YES" = TRUE, "NO" = FALSE))
 ```
 
-create a subdirectory to store the local data files used in Problems 1 and 2, and use relative paths to access these data files
+Explanation of dataset:
+
+Write a short paragraph about this dataset – explain briefly what variables the dataset contains, describe your data cleaning steps so far, and give the dimension (rows x columns) of the resulting dataset. Are these data tidy?
+
+Answer the following questions using these data:
+
+There are `r nrow(distinct(transit_data, station_name, line))` distinct stations.
+There are `r length(which(transit_data$ada))` stations that are ADA compliant.
+There are `r mean(transit_data$)` of station entrances/exits without vending that allow entrance.
+What proportion of station entrances / exits without vending allow entrance?
+Reformat data so that route number and route name are distinct variables. How many distinct stations serve the A train? Of the stations that serve the A train, how many are ADA compliant?
+
+
+
