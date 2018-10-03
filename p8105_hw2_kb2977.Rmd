@@ -115,9 +115,9 @@ combined_prec_data = rbind(prec_2016, prec_2017) %>%
 
 Directions: Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2017? What was the median number of sports balls in a dumpster in 2016?
 
-In the Trash Wheel Dataset from Part 1, there were `r nrow(trash_wheel_data)` observations. The following variables were included in this dataset: `r ls(trash_wheel_data)`. The data included was collected from year `r min(trash_wheel_data$year, na.rm = TRUE)` to year `r max(trash_wheel_data$year, na.rm = TRUE)`.  The median number of sports balls in a dumpster in 2016 was `r filter(trash_wheel_data, year == "2016") %>% pull(var = sports_balls) %>% median()`. 
+1. In the Trash Wheel Dataset from Part 1, there were `r nrow(trash_wheel_data)` observations. The following variables were included in this dataset: `r ls(trash_wheel_data)`. The data included was collected from year `r min(trash_wheel_data$year, na.rm = TRUE)` to year `r max(trash_wheel_data$year, na.rm = TRUE)`.  The median number of sports balls in a dumpster in 2016 was `r filter(trash_wheel_data, year == "2016") %>% pull(var = sports_balls) %>% median()`. 
 
-In the Combined Precipitation Data from Part 2, there were `r nrow(combined_prec_data)` observations. The following variables were included in this dataset: `r ls(combined_prec_data)`. The total precipitation in 2017 was `r filter(combined_prec_data, year == "2017") %>% pull(var = total) %>% sum()`.
+2. In the Combined Precipitation Data from Part 2, there were `r nrow(combined_prec_data)` observations. The following variables were included in this dataset: `r ls(combined_prec_data)`. The total precipitation in 2017 was `r filter(combined_prec_data, year == "2017") %>% pull(var = total) %>% sum()`.
 
 ##Problem 3
 
