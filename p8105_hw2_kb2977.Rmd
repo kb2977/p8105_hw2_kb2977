@@ -166,9 +166,34 @@ Using this dataset, do or answer the following:
 5. Make a histogram of “Excellent” response values in the year 2002.
 
 ```{r histogram}
-ggplot(brfss_data, aes(x = Excellent)) + 
-  geom_histogram() + facet_grid(~year == "2002") 
 
+library(ggridges)
+
+prop_exc_2002_hist = brfss_data %>% 
+  filter(year == "2002") %>% 
+  ggplot(aes(x = Excellent)) + 
+  geom_histogram() +
+  labs(
+    title = "Excellent Response Values in 2002",
+    x = "Excellent Response Values",
+    y = "Frequency"
+  )
+prop_exc_2002_hist
 ```
 
 6. Make a scatterplot showing the proportion of “Excellent” response values in New York County and Queens County (both in NY State) in each year from 2002 to 2010.
+
+```{r scatterplot}
+
+prop_exc_NY_QC_sp = brfss_data %>%
+  filter(locationdesc == "NY - Queens County" | locationdesc == "NY - New York County") %>%
+  ggplot(aes(x = year, y = Excellent, color = locationdesc)) + 
+  geom_point() +
+  labs(
+    title = "Excellent Response Values in NY County and Queens County from 2002 to 2010",
+    x = "Date in Years",
+    y = "Proportion of Excellent Response Values"
+  ) +
+  scale_color_discrete(name = "Location")
+prop_exc_NY_QC_sp
+```
