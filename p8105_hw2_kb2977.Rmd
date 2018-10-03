@@ -41,7 +41,7 @@ Answering following questions using transit_data from above:
 
 * There are `r nrow(distinct(transit_data, station_name, line))` distinct stations.
 * There are `r filter(distinct(transit_data, station_name, line, .keep_all = TRUE)) %>% pull(var = ada) %>% sum()` stations that are ADA compliant.
-* `r round(mean(transit_data$entry == "TRUE" & transit_data$vending == "NO"), digits = 4)` of station entrances and exits without vending are allowed entrance.
+* `r filter(transit_data, vending == "NO") %>% pull(var = entry) %>% mean()` of station entrances and exits without vending are allowed entrance.
 
 Below is the reformated data so that route number and route name are distinct variables.
 
@@ -115,9 +115,7 @@ combined_prec_data = rbind(prec_2016, prec_2017) %>%
 
 Directions: Write a paragraph about these data; you are encouraged to use inline R. Be sure to note the number of observations in both resulting datasets, and give examples of key variables. For available data, what was the total precipitation in 2017? What was the median number of sports balls in a dumpster in 2016?
 
-
-In the Trash Wheel Dataset from Part 1, there were `r nrow(trash_wheel_data)` observations. The following variables were included in this dataset: `r ls(trash_wheel_data)`. The data included was collected from year `r min(trash_wheel_data$year, na.rm = TRUE)` to year `r max(trash_wheel_data$year, na.rm = TRUE)`  The median number of sports balls in a dumpster in 2016 was `r filter(trash_wheel_data, year == "2016") %>% pull(var = sports_balls) %>% median()`. 
-
+In the Trash Wheel Dataset from Part 1, there were `r nrow(trash_wheel_data)` observations. The following variables were included in this dataset: `r ls(trash_wheel_data)`. The data included was collected from year `r min(trash_wheel_data$year, na.rm = TRUE)` to year `r max(trash_wheel_data$year, na.rm = TRUE)`.  The median number of sports balls in a dumpster in 2016 was `r filter(trash_wheel_data, year == "2016") %>% pull(var = sports_balls) %>% median()`. 
 
 In the Combined Precipitation Data from Part 2, there were `r nrow(combined_prec_data)` observations. The following variables were included in this dataset: `r ls(combined_prec_data)`. The total precipitation in 2017 was `r filter(combined_prec_data, year == "2017") %>% pull(var = total) %>% sum()`.
 
@@ -159,7 +157,7 @@ Using this dataset, do or answer the following:
 2. Is every state represented?
     + Yes, `r count(distinct(brfss_data, locationabbr))` states are represented including DC.
 3. What state is observed the most?
-    + `r max(brfss_data$locationabbr)` is observed the most
+    + `r names(which.max(table(brfss_data$locationabbr)))` is observed the most
 4. In 2002, what is the median of the “Excellent” response value?
     + `r median(brfss_data$Excellent, na.rm=TRUE)` is the median of "Excellent" responses
 5. Make a histogram of “Excellent” response values in the year 2002.
